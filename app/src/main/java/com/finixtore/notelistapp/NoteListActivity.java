@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,8 +28,7 @@ public class NoteListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(NoteListActivity.this,NoteActivity.class));
             }
         });
         initializeDisplaycontent();
@@ -46,8 +43,8 @@ public class NoteListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent= new Intent(NoteListActivity.this,NoteActivity.class);
-                NoteInfo noteInfo= (NoteInfo) listNotes.getItemAtPosition(position);
-                intent.putExtra(NoteActivity.NOTE_INFO,noteInfo);
+               // NoteInfo noteInfo= (NoteInfo) listNotes.getItemAtPosition(position);
+                intent.putExtra(NoteActivity.NOTE_POSITION,position);
                 startActivity(intent);
             }
         });

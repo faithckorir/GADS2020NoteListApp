@@ -3,13 +3,9 @@ package com.finixtore.notelistapp;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -19,9 +15,11 @@ import android.widget.Spinner;
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
+    public static final int POSITION_NOT_SET = -1;
     private Spinner spinner;
-    public static final String NOTE_INFO="com.finixtore.notelistapp.NOTE_INFO";
+    public static final String NOTE_POSITION ="com.finixtore.notelistapp.NOTE_POSITION";
     private NoteInfo mNote;
+    private boolean mIsNewNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +36,7 @@ public class NoteActivity extends AppCompatActivity {
         readDisplayStateValues();
         EditText noteTitle=findViewById(R.id.note_title);
         EditText noteDescription=findViewById(R.id.note_description);
+        if(!mIsNewNote)
         displayNote(courses,noteTitle,noteDescription);
 
 
@@ -56,7 +55,11 @@ public class NoteActivity extends AppCompatActivity {
 
     private void readDisplayStateValues() {
         Intent intent=getIntent();
-        mNote = intent.getParcelableExtra(NoteActivity.NOTE_INFO);
+      int  position = intent.getIntExtra(NoteActivity.NOTE_POSITION, POSITION_NOT_SET);
+        mIsNewNote = position==POSITION_NOT_SET;
+        if (!mIsNewNote){
+            mNote=DataManager.getInstance().getNotes().get(position);
+        }
     }
 
     @Override
