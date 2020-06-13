@@ -1,5 +1,6 @@
 package com.finixtore.notelistapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,12 +13,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
     private Spinner spinner;
+    public static final String NOTE_INFO="com.finixtore.notelistapp.NOTE_INFO";
+    private NoteInfo mNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,28 @@ public class NoteActivity extends AppCompatActivity {
                 ,courses);
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterCourses);
+        readDisplayStateValues();
+        EditText noteTitle=findViewById(R.id.note_title);
+        EditText noteDescription=findViewById(R.id.note_description);
+        displayNote(courses,noteTitle,noteDescription);
 
 
+    }
+
+    private void displayNote(List<CourseInfo> courses, EditText noteTitle, EditText noteDescription) {
+
+        List<CourseInfo> coursesinfo=DataManager.getInstance().getCourses();
+        int courseIndex=coursesinfo.indexOf(mNote.getCourse());
+        courses.set(courseIndex,mNote.getCourse());
+
+        noteTitle.setText(mNote.getTitle());
+        noteDescription.setText(mNote.getText());
+    }
+
+
+    private void readDisplayStateValues() {
+        Intent intent=getIntent();
+        mNote = intent.getParcelableExtra(NoteActivity.NOTE_INFO);
     }
 
     @Override
